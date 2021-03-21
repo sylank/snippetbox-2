@@ -7,12 +7,30 @@ import (
 	"net/http/cookiejar"
 	"net/http/httptest"
 	"testing"
+	"time"
+
+	"cubeguerrero.com/snippetbox/pkg/models/mock"
+
+	"github.com/golangcollege/sessions"
 )
 
 func newTestApplication(t *testing.T) *application {
+	templateCache, err := newTemplateCache("./../../ui/html")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	session := sessions.New([]byte("3dSm5MnygFHh7XidAtbskXrjbwfoJcbJ"))
+	session.Lifetime = 12 * time.Hour
+	session.Secure = true
+
 	return &application{
-		errorLog: log.New(ioutil.Discard, "", 0),
-		infoLog: log.New(ioutil.Discard, "", 0),
+		errorLog:      log.New(ioutil.Discard, "", 0),
+		infoLog:       log.New(ioutil.Discard, "", 0),
+		session:       session,
+		snippets:      &mock.SnippetModel{},
+		templateCache: templateCache,
+		users:         &mock.UserModel{},
 	}
 }
 
@@ -36,7 +54,7 @@ func newTestServer(t *testing.T, h http.Handler) *testServer {
 }
 
 func (ts *testServer) get(t *testing.T, urlPath string) (int, http.Header, []byte) {
-	rs, err := ts.Client().Get(ts.URL +urlPath)
+	rs, err := ts.Client().Get(ts.URL + urlPath)
 	if err != nil {
 		t.Fatal(err)
 	}
