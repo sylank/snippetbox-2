@@ -9,6 +9,7 @@ require (
 	github.com/fatih/color v1.12.0 // indirect
 	github.com/fsnotify/fsnotify v1.5.1 // indirect
 	github.com/go-sql-driver/mysql v1.5.0
+	github.com/golangcollege/sessions v1.2.0 // indirect
 	github.com/justinas/alice v1.2.0 // indirect
 	github.com/mattn/go-isatty v0.0.14 // indirect
 	github.com/pelletier/go-toml v1.9.4 // indirect
