@@ -117,8 +117,9 @@ func (app *application) signupUser(w http.ResponseWriter, r *http.Request) {
 
 	app.session.Put(r, "flash", "Your signup was successful. Please log in.")
 
-	// Otherwise send a placeholder response (for now!).
-	fmt.Fprintln(w, "Create a new user...")
+	app.render(w, r, "login.page.tmpl", &templateData{
+		Form: forms.New(nil),
+	})
 }
 
 func (app *application) loginUserForm(w http.ResponseWriter, r *http.Request) {
